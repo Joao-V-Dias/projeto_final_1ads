@@ -35,6 +35,32 @@ programa
 		}
 		
 	}
+	
+	funcao kartsDisponiveis(cadeia modelo[], real valorLocacao[], inteiro quantidadeLocacao[], cadeia locado[], inteiro totalKarts){
+    		inteiro verificaKart = 0
+
+    escreva("Karts Disponíveis para Aluguel:\n")
+    escreva("*****************************\n")
+
+    para(inteiro i = 0 ; i < totalKarts ; i++ ){
+        // Verifica se o kart não foi alugado e se não há campos em branco
+        se(locado[i] == "Não" e modelo[i] != "" e valorLocacao[i] != 0.0){
+            verificaKart = 1
+            escreva("Número: ", i, "\n")
+            escreva("Modelo: ", modelo[i], "\n")
+            escreva("Valor: R$", valorLocacao[i], "\n")
+            escreva("Quantidade de vezes em que foi locado: ", quantidadeLocacao[i], "\n")
+            escreva("*****************************\n")
+        }
+    }
+
+    se(verificaKart == 0){
+        escreva("Não há karts disponíveis para aluguel.\n")
+    }
+
+    retornaMenu()
+}
+
 
 	funcao alugarKart(cadeia modelo[], real valorLocacao[], inteiro quantidadeLocacao[], cadeia locado[], real &receita){
 		inteiro kart, verificaKart = 0
@@ -100,6 +126,7 @@ programa
 			        pare
 			    caso 2:
 			        // Código para listar Karts disponíveis
+			        kartsDisponiveis(modelo, valorLocacao, quantidadeLocacao, locado, totalKarts)
 			        pare
 			    caso 3:
 			        // Código para listar Karts locados
@@ -151,7 +178,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 79; 
+ * @POSICAO-CURSOR = 1131; 
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;
