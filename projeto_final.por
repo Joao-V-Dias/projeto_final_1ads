@@ -5,7 +5,7 @@ programa
 	funcao retornaMenu(){
 		u.aguarde(1500)
 		para(inteiro i = 4 ; i > 0 ; i--){
-				escreva("Retornando para o menu em ", i)
+				escreva("\nRetornando para o menu em ", i)
 				u.aguarde(1000)
 				limpa()
 			}
@@ -39,28 +39,50 @@ programa
 	funcao kartsDisponiveis(cadeia modelo[], real valorLocacao[], inteiro quantidadeLocacao[], cadeia locado[], inteiro totalKarts){
     		inteiro verificaKart = 0
 
-    escreva("Karts Disponíveis para Aluguel:\n")
-    escreva("*****************************\n")
+    		escreva("Karts Disponíveis para Aluguel:\n")
+    		escreva("*****************************\n")
 
-    para(inteiro i = 0 ; i < totalKarts ; i++ ){
-        // Verifica se o kart não foi alugado e se não há campos em branco
-        se(locado[i] == "Não" e modelo[i] != "" e valorLocacao[i] != 0.0){
-            verificaKart = 1
-            escreva("Número: ", i, "\n")
-            escreva("Modelo: ", modelo[i], "\n")
-            escreva("Valor: R$", valorLocacao[i], "\n")
-            escreva("Quantidade de vezes em que foi locado: ", quantidadeLocacao[i], "\n")
-            escreva("*****************************\n")
-        }
-    }
+    		para(inteiro i = 0 ; i < totalKarts ; i++ ){
+        		// Verifica se o kart não foi alugado e se não há campos em branco
+        		se(locado[i] == "Não" e modelo[i] != "" e valorLocacao[i] != 0.0){
+            		verificaKart = 1
+            		escreva("Número: ", i, "\n")
+            		escreva("Modelo: ", modelo[i], "\n")
+            		escreva("Valor: R$", valorLocacao[i], "\n")
+            		escreva("Quantidade de vezes em que foi locado: ", quantidadeLocacao[i], "\n")
+            		escreva("*****************************\n")
+        		}
+    		}
 
-    se(verificaKart == 0){
-        escreva("Não há karts disponíveis para aluguel.\n")
-    }
+    		se(verificaKart == 0){
+        		escreva("Não há karts disponíveis para aluguel.\n")
+    		}
 
-    retornaMenu()
-}
+    	retornaMenu()
+	}
 
+	funcao listarKartsLocados(cadeia &modelo[], inteiro &quantidadeLocacao[], cadeia &locado[], inteiro &totalKarts, inteiro&diaAtualizado){
+
+		inteiro i, verificaKart = 0
+
+		escreva("Os Karts locados são:\n")
+		escreva("*****************************\n")
+
+		
+		para(i=0; i<=totalKarts; i++){
+			se(locado[i] == "Sim"){
+				verificaKart = 1
+				escreva("Modelo: ", modelo[i], "\n")
+			}
+		}
+		se(verificaKart != 1){
+			escreva("Nenhum kart locado ainda ! \n")
+		}
+		
+
+		retornaMenu()
+		
+	}
 
 	funcao alugarKart(cadeia modelo[], real valorLocacao[], inteiro quantidadeLocacao[], cadeia locado[], real &receita){
 		inteiro kart, verificaKart = 0
@@ -79,25 +101,174 @@ programa
 			}
 		}
 
-		se(verificaKart == 1){
+		se(verificaKart == 1){//Verifica se exite pelo menos 1 kart cadastrado
 			escreva("Digite o número correspondente ao carro em que deseja alugar: ")
 			leia(kart)
-	
+			receita = receita+valorLocacao[kart]
 			locado[kart] = "Sim"
 			quantidadeLocacao[kart] += 1
 	
 			escreva("Kart alugado com sucesso!\n")
-		}senao{
+		}senao{//Se não há karts cadastrados
 			escreva("Infelizmente, não há karts disponíveis.\n")
 		}
 		
 		retornaMenu()
 	}
+
+	funcao devolverKart(cadeia &locado[],inteiro &totalKarts,cadeia modelo[], inteiro diaAtualizado){
+		
+		inteiro i, verificaKart[15], kartLocado[15], x = 0
+		
+		para(i=0; i<totalKarts; i++){
+			
+			se(locado[i] == "Sim"){
+				x = 1
+				
+				escreva("O carro modelo: ", modelo[i], " está locado, tecle 0 para devolve-lo ou qualquer outro para cancelar \n")
+				leia(verificaKart[i])
+
+				
+				se(verificaKart[i] == 0){
+					
+					locado[i] = "Não"
+					escreva("O kart modelo ", modelo[i], " foi devolvido ! \n")
+			
+				}senao{
+					
+					escreva("A devoluçãpo do kart modelo ", modelo[i], " foi cancelada ! \n")
+			
+				}
+				
+			}
+			
+		}
+
+		se(x ==0){
+				escreva("Alugue um kart primeiro! \n")
+			}
+
+		retornaMenu()
+		
+	}
+
+	funcao kartMaisLucrativo(cadeia &modelo[], real &valorLocacao[], inteiro &quantidadeLocacao[],real &receita, inteiro &totalKarts, inteiro &diaAtualizado, cadeia &locado[]){
+		
+		inteiro i, acumulador = 0, maisLocado = 0
+
+		escreva("O kart com maio receita é :\n")
+		escreva("*****************************\n")
+
+		se(totalKarts != 0){
+			para(i=0; i<totalKarts; i++){
+					
+				se(quantidadeLocacao[i] > maisLocado ){
+					
+					se(locado[i]== "Sim" e diaAtualizado != 1){
 	
+						maisLocado = quantidadeLocacao[i]
+
+						acumulador = i
+								
+						}
+							
+					}
+			}
+			se(acumulador != -1){
+				
+	            escreva("Modelo: ", modelo[acumulador], "\n")
+	            escreva("Valor de locação: R$", valorLocacao[acumulador], "\n")
+	            escreva("Quantidade de vezes alugado: ", acumulador, "\n")
+	            
+        		}senao {
+           		 escreva("Nenhum kart foi locado.\n")
+        		}
+					
+		}senao{
+			escreva("Aloque um kart para primeiro !")
+		}
+		retornaMenu()
+		
+		
+	}
+	
+	funcao atualizarDia(cadeia &modelo[], real &valorLocacao[], inteiro &quantidadeLocacao[], real &receita, inteiro &totalKarts, cadeia &locado[],  inteiro &diaAtualizado, cadeia &circuitoAlugado){
+
+		inteiro i
+
+		escreva("O dia está reiniciando \n")
+		escreva("*****************************\n")
+
+		para(i=0; i<totalKarts; i++){
+			
+			se(totalKarts != 0){
+				
+				se(i<totalKarts){
+		
+					escreva("Devem ser cobrados o Karts de numero : \n", i , " - valor a ser debitado : ", valorLocacao[i], "\n")
+				}senao se(i == totalKarts){
+					escreva("\n Todos os ", i , " Karts foram cobrados.")
+				}
+
+				diaAtualizado = 1
+	
+			}
+			senao{
+					escreva("Não há Karts a serem cobrados!")
+				}
+
+			locado[i] = "Não"
+			circuitoAlugado = "não"
+			receita = 0.0
+			
+		}
+
+		retornaMenu()
+	}
+	funcao locarCircuito(real &receita, cadeia &circuitoAlugado){//Função para locação de circuito
+		inteiro valorCircuito = 3500 
+		cadeia opcao
+		
+		se(circuitoAlugado == "não"){
+			escreva("\nO valor da locação do circuito é de R$" + valorCircuito + " por dia")
+			escreva("\nQuer locar? Digite sim ou não: ")
+			leia(opcao)
+			
+			se(opcao == "sim"){
+				receita = receita+(valorCircuito*0.7)
+				escreva("\nCircuito alugado por 1 dia, por R$" + valorCircuito + ",00\n")
+				circuitoAlugado = "sim"
+				u.aguarde(3000)
+			}
+		}senao{
+			escreva("O circuito já está alugado!")
+			escreva("\nDeseja cancelar a locação? Digite sim ou não: ")
+			leia(opcao)
+			se(opcao == "sim"){
+				circuitoAlugado = "não"
+				receita = receita-(valorCircuito*0.7)
+				escreva("A locação do circuito foi cancelada!")
+			}senao{
+				escreva("Circuito continuou alocado!")
+			}
+		}
+		retornaMenu()
+	}
+	funcao exibirReceita(real &receita){ //Exibir receita e lucro diário
+		real lucro = receita*0.3
+
+		escreva("Receita do dia: R$" + receita + ",00")
+		escreva("\nLucro do dia: R$" + lucro + ",00")
+		u.aguarde(3000)
+		retornaMenu()
+	}
+
 	funcao menu(){
-		inteiro opcao = 0, quantidadeLocacao[15], totalKarts = 0
+		inteiro opcao = 0, quantidadeLocacao[15], totalKarts = 0, diaAtualizado
 		real valorLocacao[15], receita = 0.0
-		cadeia modelo[15], locado[15]
+		cadeia modelo[15], locado[15], circuitoAlugado = "não"
+
+		diaAtualizado = 0
 
 		enquanto(opcao != 10){
 			limpa()
@@ -130,7 +301,7 @@ programa
 			        pare
 			    caso 3:
 			        // Código para listar Karts locados
-			        
+			        listarKartsLocados(modelo, quantidadeLocacao, locado, totalKarts, diaAtualizado)
 			        pare
 			    caso 4:
 			        // Código para alugar um Kart
@@ -138,23 +309,23 @@ programa
 			        pare
 			    caso 5:
 			        // Código para devolver um Kart
-			        
+			        devolverKart(locado, totalKarts,modelo, diaAtualizado)
 			        pare
 			    caso 6:
 			        // Código para exibir o Kart que mais gerou ganhos
-			        
+			        kartMaisLucrativo(modelo, valorLocacao, quantidadeLocacao, receita, totalKarts, diaAtualizado,locado)
 			        pare
 			    caso 7:
 			        // Código para mostrar a receita e lucro do dia
-			        
+			        exibirReceita(receita)
 			        pare
 			    caso 8:
 			        // Código para locação de circuito
-			        
+			        locarCircuito(receita, circuitoAlugado)
 			        pare
 			    caso 9:
 			        // Código para atualizar o dia
-			        
+			        atualizarDia(modelo, valorLocacao, quantidadeLocacao, receita, totalKarts, locado, diaAtualizado, circuitoAlugado)
 			        pare
 			    caso 10:
 			        // Código para sair do programa
@@ -173,12 +344,13 @@ programa
 		menu()
 	}
 }
+
 /* $$$ Portugol Studio $$$ 
  * 
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 1131; 
+ * @POSICAO-CURSOR = 2408; 
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;
