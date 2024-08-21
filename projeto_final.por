@@ -2,9 +2,9 @@ programa
 {
 	inclua biblioteca Util --> u
 
-	funcao retornaMenu(){
+	funcao retornaMenu(){ //Função que retorna ao menu principal
 		u.aguarde(1500)
-		para(inteiro i = 4 ; i > 0 ; i--){
+		para(inteiro i = 4 ; i > 0 ; i--){//Contagem
 				escreva("\nRetornando para o menu em ", i)
 				u.aguarde(1000)
 				limpa()
@@ -12,7 +12,7 @@ programa
 	}
 	
 	funcao cadastrarKart(cadeia &modelo[], real &valorLocacao[], inteiro &quantidadeLocacao[], cadeia &locado[], inteiro &totalKarts){
-		se(totalKarts < 15 ){
+		se(totalKarts < 15 ){//Verifica se o limite de karts cadastrados foi atingido ou não
 			escreva("Cadastrar Kart:\n")
 			
 			escreva("Modelo: ")
@@ -30,10 +30,9 @@ programa
 			escreva("Kart cadastrado com sucesso!\n")
 			retornaMenu()
 			
-		}senao{
+		}senao{//
 			escreva("O número limite de Karts cadastrados foi atingido!")
 		}
-		
 	}
 	
 	funcao kartsDisponiveis(cadeia modelo[], real valorLocacao[], inteiro quantidadeLocacao[], cadeia locado[], inteiro totalKarts){
@@ -68,8 +67,7 @@ programa
 		escreva("Os Karts locados são:\n")
 		escreva("*****************************\n")
 
-		
-		para(i=0; i<=totalKarts; i++){
+		para(i=0; i<=totalKarts; i++){//Verifica e mostra quais karts estão locados.
 			se(locado[i] == "Sim"){
 				verificaKart = 1
 				escreva("Modelo: ", modelo[i], "\n")
@@ -78,10 +76,7 @@ programa
 		se(verificaKart != 1){
 			escreva("Nenhum kart locado ainda ! \n")
 		}
-		
-
 		retornaMenu()
-		
 	}
 
 	funcao alugarKart(cadeia modelo[], real valorLocacao[], inteiro quantidadeLocacao[], cadeia locado[], real &receita){
@@ -90,7 +85,7 @@ programa
 		escreva("Alugar Kart!\n")
 		escreva("*****************************\n")
 		
-		para(inteiro i = 0 ; i < 15 ; i++ ){
+		para(inteiro i = 0 ; i < 15 ; i++ ){//Verificar e mostrar quais karts estão para aluguel
 			se(locado[i] == "Não"){
 				verificaKart = 1
 				escreva("Número: ", i, "\n")
@@ -112,44 +107,31 @@ programa
 		}senao{//Se não há karts cadastrados
 			escreva("Infelizmente, não há karts disponíveis.\n")
 		}
-		
 		retornaMenu()
 	}
 
 	funcao devolverKart(cadeia &locado[],inteiro &totalKarts,cadeia modelo[], inteiro diaAtualizado){
-		
 		inteiro i, verificaKart[15], kartLocado[15], x = 0
 		
-		para(i=0; i<totalKarts; i++){
-			
+		para(i=0; i<totalKarts; i++){//Verificar e mostrar quais karts estão alugados
 			se(locado[i] == "Sim"){
 				x = 1
-				
-				escreva("O carro modelo: ", modelo[i], " está locado, tecle 0 para devolve-lo ou qualquer outro para cancelar \n")
+			
+				escreva("O carro modelo: ", modelo[i], " está locado, tecle 0 para devolve-lo ou qualquer outro para cancelar: \n")
 				leia(verificaKart[i])
-
 				
 				se(verificaKart[i] == 0){
-					
 					locado[i] = "Não"
-					escreva("O kart modelo ", modelo[i], " foi devolvido ! \n")
-			
+					escreva("O kart modelo ", modelo[i], " foi devolvido! \n")
 				}senao{
-					
-					escreva("A devoluçãpo do kart modelo ", modelo[i], " foi cancelada ! \n")
-			
+					escreva("A devoluçãpo do kart modelo ", modelo[i], " foi cancelada! \n")
 				}
-				
 			}
-			
 		}
-
-		se(x ==0){
+		se(x == 0){
 				escreva("Alugue um kart primeiro! \n")
 			}
-
 		retornaMenu()
-		
 	}
 
 	funcao kartMaisLucrativo(cadeia &modelo[], real &valorLocacao[], inteiro &quantidadeLocacao[],real &receita, inteiro &totalKarts, inteiro &diaAtualizado, cadeia &locado[]){
@@ -161,17 +143,12 @@ programa
 
 		se(totalKarts != 0){
 			para(i=0; i<totalKarts; i++){
-					
 				se(quantidadeLocacao[i] > maisLocado ){
-					
 					se(locado[i]== "Sim" e diaAtualizado != 1){
-	
 						maisLocado = quantidadeLocacao[i]
 
-						acumulador = i
-								
-						}
-							
+						acumulador = i	
+						}	
 					}
 			}
 			se(acumulador != -1){
@@ -200,53 +177,45 @@ programa
 		escreva("*****************************\n")
 
 		para(i=0; i<totalKarts; i++){
-			
 			se(totalKarts != 0){
-				
 				se(i<totalKarts){
-		
 					escreva("Devem ser cobrados o Karts de numero : \n", i , " - valor a ser debitado : ", valorLocacao[i], "\n")
 				}senao se(i == totalKarts){
 					escreva("\n Todos os ", i , " Karts foram cobrados.")
 				}
-
 				diaAtualizado = 1
-	
 			}
 			senao{
-					escreva("Não há Karts a serem cobrados!")
-				}
-
+				escreva("Não há Karts a serem cobrados!")
+			}
 			locado[i] = "Não"
 			circuitoAlugado = "não"
 			receita = 0.0
-			
 		}
-
 		retornaMenu()
 	}
 	funcao locarCircuito(real &receita, cadeia &circuitoAlugado){//Função para locação de circuito
 		inteiro valorCircuito = 3500 
 		cadeia opcao
 		
-		se(circuitoAlugado == "não"){
+		se(circuitoAlugado == "não"){//Caso não esteja alugado o circuito
 			escreva("\nO valor da locação do circuito é de R$" + valorCircuito + " por dia")
 			escreva("\nQuer locar? Digite sim ou não: ")
 			leia(opcao)
 			
-			se(opcao == "sim"){
-				receita = receita+(valorCircuito*0.7)
+			se(opcao == "sim"){//Se quiser alocar
+				receita = receita+(valorCircuito*0.7)//Adiciona receita
 				escreva("\nCircuito alugado por 1 dia, por R$" + valorCircuito + ",00\n")
 				circuitoAlugado = "sim"
 				u.aguarde(3000)
 			}
-		}senao{
+		}senao{//Caso esteja alugado o circuito
 			escreva("O circuito já está alugado!")
 			escreva("\nDeseja cancelar a locação? Digite sim ou não: ")
 			leia(opcao)
-			se(opcao == "sim"){
+			se(opcao == "sim"){//Se quiser cancelar a locação.
 				circuitoAlugado = "não"
-				receita = receita-(valorCircuito*0.7)
+				receita = receita-(valorCircuito*0.7)//Retira a receita que tinha sido adicionada
 				escreva("A locação do circuito foi cancelada!")
 			}senao{
 				escreva("Circuito continuou alocado!")
@@ -329,28 +298,24 @@ programa
 			        pare
 			    caso 10:
 			        // Código para sair do programa
-			        
 			        pare
 			    caso contrario:
 			        
 			        pare
 			}
 		}
-
 	}
-	
 	funcao inicio()
 	{
 		menu()
 	}
 }
-
 /* $$$ Portugol Studio $$$ 
  * 
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 2408; 
+ * @POSICAO-CURSOR = 9586; 
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;
